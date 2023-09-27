@@ -1,0 +1,25 @@
+.outletbackground {
+  background-image: linear-gradient(to bottom, rgba(174, 189, 159, 0.85), rgba(4, 14, 34, 0.85)), url("https://img.freepik.com/free-photo/education-concept-books-laptop-library_1150-10586.jpg?w=740&t=st=1679774778~exp=1679775378~hmac=d20465d33fae35326f18d34564eaca0f58f5fee8f43443d91dc8781759928d93");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  height: 92.7vh;
+}
+
+.form-control {
+  background: transparent;
+}
+
+.form-control:focus {
+  background: transparent;
+}
+
+.form-control::placeholder {
+  color: rgb(50, 103, 15);
+  opacity: 1;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

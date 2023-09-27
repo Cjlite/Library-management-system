@@ -1,0 +1,19 @@
+.hover-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+
+
+.hover-content {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    position: absolute;
+    /* / top: 100%; /
+    / left: 0; /
+    / display: none; / */
+}
