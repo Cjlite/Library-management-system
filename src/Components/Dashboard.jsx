@@ -10,6 +10,9 @@ import Modal from 'react-modal';
 export default function Dashboard() {
   const [confirm, setConfirm] = useState(false);
   const [searchTitle, setSearchTitle] = useState('');
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [searchBooks, setSearchBooks] = useState('');
+  const [filteredBooks, setFilteredBooks] = useState([]);
   const [Toggle, setToggle] = useState(false);
   const [student, setStudent] = useState([]);
   const [book, setbook] = useState([]);
@@ -44,7 +47,24 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchData();
-  }, [Toggle]);
+    const filtered = book.filter((item) =>
+      item.title.toLowerCase().includes(searchBooks.toLowerCase())
+    );
+
+    const filteredStudents = student.filter((value) => {
+      return (
+        searchTitle === "" ||
+        value.studentname.toLowerCase().includes(searchTitle.toLowerCase()) ||
+        value.class.toLowerCase().includes(searchTitle.toLowerCase()) ||
+        value.stream.toLowerCase().includes(searchTitle.toLowerCase()) ||
+        value.rollno.toString().includes(searchTitle.toString()) ||
+        value.contact.toString().includes(searchTitle.toString()) ||
+        value.libraryid.toLowerCase().includes(searchTitle.toLowerCase())
+      );
+    });
+    setFilteredStudents(filteredStudents);
+    setFilteredBooks(filtered);
+  }, [Toggle, searchBooks]);
 
   const handleEdit = async (item) => {
     try {
@@ -255,23 +275,36 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        {displayBooks ? (
+          <div className="search-box">
+            <h4>Search The Books Here...</h4>
+            <input
+              className="search-input"
+              type="search"
+              placeholder="Search..."
+              aria-label="Search"
+              onChange={(e) => setSearchBooks(e.target.value)}
+            />
+          </div>
+        ) : (
+          <div className="search-box">
+            <h4>Search The Students Here...</h4>
+            <input
+              className="search-input"
+              type="search"
+              placeholder="Search..."
+              aria-label="Search"
+              onChange={(e) => setSearchTitle(e.target.value)}
+            />
+          </div>
+        )}
 
-        <div className="search-box">
-          <h4>Search The Students Here...</h4>
-          <input
-            className="search-input"
-            type="search"
-            placeholder="Search..."
-            aria-label="Search"
-            onChange={(e) => setSearchTitle(e.target.value)}
-          />
-        </div>
         {displayBooks ? (
           <div className='books-table-container'>
             <table className=" ">
               <thead style={{ color: "black" }}>
                 <tr className='books-table-row-header'>
-                  <th className='books-table-row' scope="col">No</th>
+                  <th className='books-table-row' scope="col">No.</th>
                   <th className='books-table-row' scope="col">Title</th>
                   <th className='books-table-row' scope="col">Auther</th>
                   <th className='books-table-row' scope="col">ISBN No</th>
@@ -279,20 +312,17 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className=' '>
-                {displayBooks
-                  ? book.map((item, index) => (
-                    <tr className='' key={item._id}>
-                      <th className='th-id' scope="">{index + 1}</th>
-                      <th className='book-td'>{item.title}</th>
-                      <th className='book-td'>{item.author}</th>
-                      <th className='book-td'>{item.isbn}</th>
-                      <th className='book-td'>{item.price}</th>
-                    </tr>
-                  ))
-                  : student.filter((value) => {
-                    // Filter and render students here
-                  })
-                }
+                {filteredBooks.map((item, index) => (
+                  <tr className="" key={item._id}>
+                    <th className="th-id" scope="">
+                      {index + 1}
+                    </th>
+                    <th className="book-td">{item.title}</th>
+                    <th className="book-td">{item.author}</th>
+                    <th className="book-td">{item.isbn}</th>
+                    <th className="book-td">{item.price}</th>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -301,7 +331,7 @@ export default function Dashboard() {
             <table className=" ">
               <thead style={{ color: "black" }}>
                 <tr className='table-row-header'>
-                  <th className='books-table-row' scope="col">#</th>
+                  <th className='books-table-row' scope="col">No.</th>
                   <th className='books-table-row' scope="col">Name</th>
                   <th className='books-table-row' scope="col">Class</th>
                   <th className='books-table-row' scope="col">Stream</th>
@@ -313,47 +343,30 @@ export default function Dashboard() {
               </thead>
               <tbody className=' '>
                 {
-                  student.filter((value) => {
-                    if (searchTitle === "") {
-                      return value;
-                    } else if (
-                      value.studentname.toLowerCase().includes(searchTitle.toLowerCase()) ||
-                      value.class.toLowerCase().includes(searchTitle.toLowerCase()) ||
-                      value.stream.toLowerCase().includes(searchTitle.toLowerCase()) ||
-                      value.rollno.toString().includes(searchTitle.toString()) ||
-                      value.contact.toString().includes(searchTitle.toString()) ||
-                      value.libraryid.toLowerCase().includes(searchTitle.toLowerCase())
-
-                    ) {
-                      return value;
-                    }
-                  }).map((item, index) => {
+                  filteredStudents.map((item, index) => {
                     return (
-                      <>
-                        <tr>
-                          <th className="th-id">{index + 1}</th>
-                          <th className='th-id'>{item.studentname}</th>
-                          <th className='th-id'>{item.class}</th>
-                          <th className='th-id'>{item.stream}</th>
-                          <th className='th-id'>{item.rollno}</th>
-                          <th className='th-id'>{item.contact}</th>
-                          <th className='th-id'>{item.libraryid}</th>
-                          <th className='th-id'>
-                            <div className="button-container">
-                              <div className="">
-                                <button className='editbutton' onClick={() => {
-                                  handleEdit(item._id)
-                                  localStorage.setItem("editId", item._id)
-                                }} >Edit</button></div>
-                              <div className="">
-                                <button className='deletbutton'
-                                  onClick={() => handleDelete(item._id)}
-                                >Delete</button>
-                              </div>
+                      <tr key={item._id}>
+                        <th className="th-id">{index + 1}</th>
+                        <th className='th-id'>{item.studentname}</th>
+                        <th className='th-id'>{item.class}</th>
+                        <th className='th-id'>{item.stream}</th>
+                        <th className='th-id'>{item.rollno}</th>
+                        <th className='th-id'>{item.contact}</th>
+                        <th className='th-id'>{item.libraryid}</th>
+                        <th className='th-id'>
+                          <div className="button-container">
+                            <div className="">
+                              <button className='editbutton' onClick={() => {
+                                handleEdit(item._id)
+                                localStorage.setItem("editId", item._id)
+                              }} >Edit</button>
                             </div>
-                          </th>
-                        </tr>
-                      </>
+                            <div className="">
+                              <button className='deletbutton' onClick={() => handleDelete(item._id)}>Delete</button>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
                     )
                   })
                 }
