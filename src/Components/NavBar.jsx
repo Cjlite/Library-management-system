@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import "../Components/NavBar.css";
+// import "../Components/NavBar.css";
 
 const Navbar = () => {
     const [resourcesOpen, setResourcesOpen] = useState(false);

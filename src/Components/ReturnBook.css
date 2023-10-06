@@ -1,0 +1,59 @@
+.return-book-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-book-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.add-book-form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+}
+
+.label-row {
+    display: flex;
+    gap: 4rem;
+}
+
+.addinput[type="number"],
+.addinput[type="date"],
+.addinput[type="email"],
+.addinput[type="Password"],
+.addinput[type="text"] {
+    width: 100%;
+    padding: 14px;
+    border-color: rgb(7, 36, 62);
+    box-shadow: 0 0 10px white;
+}
+
+.addinput:hover {
+    border-color: rgb(7, 36, 62);
+}
+
+.submit-button {
+    text-align: center;
+}
+
+button {
+    margin-top: 2rem;
+    background: rgb(7, 36, 62);
+    color: #fff;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #003366;
+    box-shadow: 0 0 10px white;
+}
