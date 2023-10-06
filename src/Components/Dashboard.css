@@ -65,32 +65,16 @@ table {
     width: 100%;
     border-collapse: collapse;
     border-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px white;
     border-radius: 5px;
     overflow: hidden;
-    margin: 20px;
-}
-
-td {
-    border-color: white;
-    border-bottom: 1px solid #ccc;
-    height: 10px;
+    margin: 30px;
 }
 
 .table-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    border-color: white;
-}
-
-.table-row {
-    padding: 10px;
-    border-color: white;
-}
-
-.table-row-header {
-    border-bottom: white;
     border-color: white;
 }
 
@@ -106,6 +90,32 @@ td {
     box-shadow: 0 0 10px white;
 }
 
+/*Books table style*/
+.th-id {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    height: 40px;
+    color: white;
+}
+
+.book-td {
+    font-weight: 500;
+    border-bottom: 1px solid #ccc;
+    height: 40px;
+    color: white;
+}
+
+.books-table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.books-table-row {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+    color: black;
+}
 
 /*Delete Modal style*/
 .deletemodal {

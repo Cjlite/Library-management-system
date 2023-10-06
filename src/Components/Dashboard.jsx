@@ -25,6 +25,7 @@ export default function Dashboard() {
   const [deleteId, setDeleteId] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [displayBooks, setDisplayBooks] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -92,6 +93,10 @@ export default function Dashboard() {
     });
   };
 
+  const toggleDisplay = () => {
+    setDisplayBooks(!displayBooks);
+  };
+
   return (
     <>
       <div className="dashboard-container">
@@ -137,32 +142,6 @@ export default function Dashboard() {
               />
             </div>
             <div className="editemodal-input-container">
-              <label htmlFor="studentName" className='editemodal-label'>Stream:</label>
-              <input
-                type="text"
-                id="stream"
-                name="stream"
-                className='editemodal-input'
-                onChange={(e) =>
-                  setPrevious({ ...previous, [e.target.name]: e.target.value })
-                }
-                value={previous.stream}
-              />
-            </div>
-            <div className="editemodal-input-container">
-              <label htmlFor="studentName" className='editemodal-label'>Contact Number:</label>
-              <input
-                type="text"
-                id="contactNumber"
-                name="contactNumber"
-                className='editemodal-input'
-                onChange={(e) =>
-                  setPrevious({ ...previous, [e.target.name]: e.target.value })
-                }
-                value={previous.contact}
-              />
-            </div>
-            <div className="editemodal-input-container">
               <label htmlFor="studentName" className='editemodal-label'>Class:</label>
               <input
                 type="text"
@@ -176,16 +155,42 @@ export default function Dashboard() {
               />
             </div>
             <div className="editemodal-input-container">
-              <label htmlFor="studentName" className='editemodal-label'>Roll No :</label>
+              <label htmlFor="studentName" className='editemodal-label'>Stream:</label>
               <input
                 type="text"
-                id="rollNumber"
-                name="rollNumber"
+                id="stream"
+                name="stream"
                 className='editemodal-input'
                 onChange={(e) =>
                   setPrevious({ ...previous, [e.target.name]: e.target.value })
                 }
-                value={previous.class}
+                value={previous.stream}
+              />
+            </div>
+            <div className="editemodal-input-container">
+              <label htmlFor="rollno" className='editemodal-label'>Roll No:</label>
+              <input
+                type="text"
+                id="rollno"
+                name="rollno"
+                className='editemodal-input'
+                onChange={(e) =>
+                  setPrevious({ ...previous, [e.target.name]: e.target.value })
+                }
+                value={previous.rollno}
+              />
+            </div>
+            <div className="editemodal-input-container">
+              <label htmlFor="studentName" className='editemodal-label'>Contact Number:</label>
+              <input
+                type="text"
+                id="contactNumber"
+                name="contactNumber"
+                className='editemodal-input'
+                onChange={(e) =>
+                  setPrevious({ ...previous, [e.target.name]: e.target.value })
+                }
+                value={previous.contact}
               />
             </div>
             <div className="editemodal-input-container">
@@ -219,7 +224,7 @@ export default function Dashboard() {
         </Modal>
 
         <div className="dashboard-stats">
-          <div className="total-books-container">
+          <div className="total-books-container" onClick={toggleDisplay}>
             <div className="stat-icon">
               <GiOpenBook />
             </div>
@@ -261,70 +266,101 @@ export default function Dashboard() {
             onChange={(e) => setSearchTitle(e.target.value)}
           />
         </div>
+        {displayBooks ? (
+          <div className='books-table-container'>
+            <table className=" ">
+              <thead style={{ color: "black" }}>
+                <tr className='books-table-row-header'>
+                  <th className='books-table-row' scope="col">No</th>
+                  <th className='books-table-row' scope="col">Title</th>
+                  <th className='books-table-row' scope="col">Auther</th>
+                  <th className='books-table-row' scope="col">ISBN No</th>
+                  <th className='books-table-row' scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody className=' '>
+                {displayBooks
+                  ? book.map((item, index) => (
+                    <tr className='' key={item._id}>
+                      <th className='th-id' scope="">{index + 1}</th>
+                      <th className='book-td'>{item.title}</th>
+                      <th className='book-td'>{item.author}</th>
+                      <th className='book-td'>{item.isbn}</th>
+                      <th className='book-td'>{item.price}</th>
+                    </tr>
+                  ))
+                  : student.filter((value) => {
+                    // Filter and render students here
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="table-container">
+            <table className=" ">
+              <thead style={{ color: "black" }}>
+                <tr className='table-row-header'>
+                  <th className='books-table-row' scope="col">#</th>
+                  <th className='books-table-row' scope="col">Name</th>
+                  <th className='books-table-row' scope="col">Class</th>
+                  <th className='books-table-row' scope="col">Stream</th>
+                  <th className='books-table-row' scope="col">Roll No</th>
+                  <th className='books-table-row' scope="col">Contact No.</th>
+                  <th className='books-table-row' scope="col">Library No.</th>
+                  <th className='books-table-row' scope="col" className="action-header">Action</th>
+                </tr>
+              </thead>
+              <tbody className=' '>
+                {
+                  student.filter((value) => {
+                    if (searchTitle === "") {
+                      return value;
+                    } else if (
+                      value.studentname.toLowerCase().includes(searchTitle.toLowerCase()) ||
+                      value.class.toLowerCase().includes(searchTitle.toLowerCase()) ||
+                      value.stream.toLowerCase().includes(searchTitle.toLowerCase()) ||
+                      value.rollno.toString().includes(searchTitle.toString()) ||
+                      value.contact.toString().includes(searchTitle.toString()) ||
+                      value.libraryid.toLowerCase().includes(searchTitle.toLowerCase())
 
-        <div className="table-container">
-          <table class=" ">
-            <thead style={{ color: "black" }}>
-              <tr className='table-row-header'>
-                <th className='table-row' scope="col">#</th>
-                <th className='table-row' scope="col">Name</th>
-                <th className='table-row' scope="col">Class</th>
-                <th className='table-row' scope="col">Stream</th>
-                <th className='table-row' scope="col">Roll No</th>
-                <th className='table-row' scope="col">Contact No.</th>
-                <th className='table-row' scope="col">Library No.</th>
-                <th className='table-row' scope="col" className="action-header">Action</th>
-              </tr>
-            </thead>
-            <tbody className=' '>
-              {
-                student.filter((value) => {
-                  if (searchTitle === "") {
-                    return value;
-                  } else if (
-                    value.studentname.toLowerCase().includes(searchTitle.toLowerCase()) ||
-                    value.class.toLowerCase().includes(searchTitle.toLowerCase()) ||
-                    value.stream.toLowerCase().includes(searchTitle.toLowerCase()) ||
-                    value.rollno.toString().includes(searchTitle.toString()) ||
-                    value.contact.toString().includes(searchTitle.toString()) ||
-                    value.libraryid.toLowerCase().includes(searchTitle.toLowerCase())
-
-                  ) {
-                    return value;
-                  }
-                }).map((item, index) => {
-                  return (
-                    <>
-                      <tr>
-                        <th scope="">{index + 1}</th>
-                        <td>{item.studentname}</td>
-                        <td>{item.class}</td>
-                        <td>{item.stream}</td>
-                        <td>{item.rollno}</td>
-                        <td>{item.contact}</td>
-                        <td>{item.libraryid}</td>
-                        <td>
-                          <div className="button-container">
-                            <div className="">
-                              <button className='editbutton' onClick={() => {
-                                handleEdit(item._id)
-                                localStorage.setItem("editId", item._id)
-                              }} >Edit</button></div>
-                            <div className="">
-                              <button className='deletbutton'
-                                onClick={() => handleDelete(item._id)}
-                              >Delete</button>
+                    ) {
+                      return value;
+                    }
+                  }).map((item, index) => {
+                    return (
+                      <>
+                        <tr>
+                          <th className="th-id">{index + 1}</th>
+                          <th className='th-id'>{item.studentname}</th>
+                          <th className='th-id'>{item.class}</th>
+                          <th className='th-id'>{item.stream}</th>
+                          <th className='th-id'>{item.rollno}</th>
+                          <th className='th-id'>{item.contact}</th>
+                          <th className='th-id'>{item.libraryid}</th>
+                          <th className='th-id'>
+                            <div className="button-container">
+                              <div className="">
+                                <button className='editbutton' onClick={() => {
+                                  handleEdit(item._id)
+                                  localStorage.setItem("editId", item._id)
+                                }} >Edit</button></div>
+                              <div className="">
+                                <button className='deletbutton'
+                                  onClick={() => handleDelete(item._id)}
+                                >Delete</button>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </>
-                  )
-                })
-              }
-            </tbody>
-          </table>
-        </div>
+                          </th>
+                        </tr>
+                      </>
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </>
   )
